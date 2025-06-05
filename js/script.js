@@ -116,4 +116,22 @@ document.getElementById("frmAgregar").addEventListener("submit", async e => {
         headers: {'Content-Type':'application/json'}, //Lo que se tiene que enviar o en que formato se va a enviar
         body: JSON.stringify({Nombre, Apellido, Correo}) //Envia el contenido
     });
+
+    //Validacion
+    if(respuesta.ok){
+        //Mensaje de confirmacion
+        alert("El registro fue agregado correctamente")
+
+        //Limpiar el formulario
+        document.getElementById("frmAgregar").reset();
+
+        //Cerrar el modal (dialog)
+        modal.close();
+
+        //Recargar la tabla
+        obtenerRegistros();
+    }
+    else{
+        alert("Hubo un error al guardar");
+    }
 });*/
