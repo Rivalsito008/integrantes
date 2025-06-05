@@ -45,4 +45,75 @@ obtenerRegistros();
 
 const modal = document.getElementById("mdAgregar"); //Cuadro de dialogo
 const btnAgregar = document.getElementById("btnAgregar"); //Boton para abrir
-const btnCerrar = document.getElementById("btnCerrarModal");
+const btnCerrar = document.getElementById("btnCerrarModal"); //Boton para cerrar
+const frmAgregar = document.getElementById("frmAgregar"); //Agregar un nuevo integrante
+
+btnAgregar.addEventListener("click", ()=>{
+    modal.showModal(); //Abre modal cuando a btnAgregar se le hace click
+});
+
+btnCerrar.addEventListener("click", ()=>{
+    modal.close(); //CIerra modal cuando a btnCerrarModal se le hace click
+});
+
+//Agregar un nuevop integrante desde el formulario
+document.getElementById("frmAgregar").addEventListener("submit", async e => {
+    e.preventDefault(); //Evita que los datos se envie por defecto
+
+    //Capturar los valores del formulario
+    const Nombre = document.getElementById("txtNombre").value.Trim();
+    const Apellido = document.getElementById("txtApellido").value.Trim();
+    const Correo = document.getElementById("txtEmail").value.Trim();
+
+    //Validacion basica
+    if(!Nombre || !Apellido || !Correo){
+        alert("Complete todos los campos");
+        return; //Evita que el codigo se siga ejecutando
+    }
+
+    //Llamar a la API para enviar los datos
+    const respuesta = await fetch(API_URL, {
+        method: "POST", 
+        headers: {'Content-Type':'application/json'}, //Lo que se tiene que enviar o en que formato se va a enviar
+        body: JSON.stringify({Nombre, Apellido, Correo}) //Envia el contenido
+    });
+
+    //Validacion
+    if(respuesta.ok){
+        //Mensaje de confirmacion
+        alert("El registro fue agregado correctamente")
+
+        //Limpiar el formulario
+        document.getElementById("frmAgregar").reset();
+
+        //Cerrar el modal (dialog)
+        modal.close();
+
+        //Recargar la tabla
+        obtenerRegistros();
+    }
+    else{
+        alert("Hubo un error al guardar");
+    }
+});
+
+/*frmAgregar.addEventListener("submit", async e => {
+    e.preventDefault(); //Evita que los datos se envie por defecto
+    //Capturar los valores del formulario
+    const Nombre = document.getElementById("txtNombre").value.Trim();
+    const Apellido = document.getElementById("txtApellido").value.Trim();
+    const Correo = document.getElementById("txtEmail").value.Trim();
+
+    //Validacion basica
+    if(!Nombre || !Apellido || !Correo){
+        alert("Complete todos los campos");
+        return; //Evita que el codigo se siga ejecutando
+    }
+
+    //Llamar a la API para enviar los datos
+    const respuesta = await fetch(API_URL, {
+        method: "POST", 
+        headers: {'Content-Type':'application/json'}, //Lo que se tiene que enviar o en que formato se va a enviar
+        body: JSON.stringify({Nombre, Apellido, Correo}) //Envia el contenido
+    });
+});*/
