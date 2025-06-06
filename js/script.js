@@ -31,7 +31,8 @@ function mostrarRegistro(datos){
                 <td>${persona.Correo}</td>
                 <td>
                     <button>Editar</button>
-                    <button>Eliminar</button>
+                    <button onclick = "EliminarPersona(${persona.id})">Eliminar</button>
+ 
                 </td>
             </tr>
         `;
@@ -97,41 +98,17 @@ document.getElementById("frmAgregar").addEventListener("submit", async e => {
     }
 });
 
-/*frmAgregar.addEventListener("submit", async e => {
-    e.preventDefault(); //Evita que los datos se envie por defecto
-    //Capturar los valores del formulario
-    const Nombre = document.getElementById("txtNombre").value.Trim();
-    const Apellido = document.getElementById("txtApellido").value.Trim();
-    const Correo = document.getElementById("txtEmail").value.Trim();
-
-    //Validacion basica
-    if(!Nombre || !Apellido || !Correo){
-        alert("Complete todos los campos");
-        return; //Evita que el codigo se siga ejecutando
-    }
-
-    //Llamar a la API para enviar los datos
-    const respuesta = await fetch(API_URL, {
-        method: "POST", 
-        headers: {'Content-Type':'application/json'}, //Lo que se tiene que enviar o en que formato se va a enviar
-        body: JSON.stringify({Nombre, Apellido, Correo}) //Envia el contenido
-    });
-
-    //Validacion
-    if(respuesta.ok){
-        //Mensaje de confirmacion
-        alert("El registro fue agregado correctamente")
-
-        //Limpiar el formulario
-        document.getElementById("frmAgregar").reset();
-
-        //Cerrar el modal (dialog)
-        modal.close();
-
-        //Recargar la tabla
+//Funcion para borrar registros
+async function EliminarPersona(id){
+    const confirmacion = confirm("¿Desea de eliminar el registro?")
+ 
+    //Validamos si el usuario eligio "Aceptar"
+    if(confirmacion){
+        await fetch(`${API_URL}/${id}`, {
+            method: "DELETE"
+        }); //Llamada al endpoint
+ 
+        //Recargar la tabla para actualizar la vista
         obtenerRegistros();
     }
-    else{
-        alert("Hubo un error al guardar");
-    }
-});*/
+}
